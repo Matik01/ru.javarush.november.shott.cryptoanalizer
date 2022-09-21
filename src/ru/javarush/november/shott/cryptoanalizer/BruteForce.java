@@ -23,7 +23,13 @@ public class BruteForce extends Cypher {
     }
 
     public void bruteForce() {
-        outputFileCreation(userOutputPath);
+        if (Files.notExists(userOutputPath)) {
+            try {
+                Files.createFile(userOutputPath);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         for (int i = 0; i < alphabet.size(); i++) {
             encryptionKey += 1;
