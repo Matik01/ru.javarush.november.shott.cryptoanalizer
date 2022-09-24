@@ -8,8 +8,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner console = new Scanner(System.in);
 
-        System.out.println("Hello!");
-        System.out.println(TYPE_IN_TO_CONTINUE);
+        System.out.println("Hello!\n" + TYPE_IN_TO_CONTINUE);
         while (console.hasNextLine()) {
             String input = console.nextLine();
 
@@ -18,26 +17,24 @@ public class Main {
 
                 Cypher encrypt = new Cypher(console.nextInt(), input);
                 encrypt.encryption();
-                System.out.printf("Check out encrypted file in this directory: ", encrypt.outputPath);
-                System.out.println(TYPE_IN_TO_CONTINUE);
+                System.out.println("Check out decrypted file in this directory: " + encrypt.outputPath);
 
             } else if (input.equals("decrypt")) {
                 System.out.println("Type decryption integer key");
 
                 Cypher decrypt = new Cypher(console.nextInt(), input);
                 decrypt.decryption();
-                System.out.printf("Check out decrypted file in this directory: ", decrypt.outputPath);
-                System.out.println("\n" + TYPE_IN_TO_CONTINUE);
-
-            } else if (input.equals("exit")) {
-                break;
+                System.out.println("Check out decrypted file in this directory: " + decrypt.outputPath);
 
             } else if (input.equals("brute")) {
                 BruteForce bruteForce = new BruteForce(0);
                 bruteForce.bruteForce();
-                System.out.println(TYPE_IN_TO_CONTINUE);
+                System.out.println("Check out decrypted file in this directory: " + bruteForce.userOutputPath);
+            } else if (input.equals("exit")) {
+                break;
+
             } else {
-                System.out.println("Type encrypt/decrypt/exit");
+                System.out.println(TYPE_IN_TO_CONTINUE);
 
             }
 

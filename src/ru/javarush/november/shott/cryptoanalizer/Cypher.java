@@ -95,8 +95,10 @@ public class Cypher {
                 if (alphabet.contains(upperNextChar)) {
                     if (alphabet.indexOf(upperNextChar) - encryptionKey < 0) {
 
-                        List<Character> circularAlphabet = alphabet.subList(alphabet.indexOf(upperNextChar) + 1, alphabet.size());
-                        circularAlphabet.addAll(alphabet.subList(0, alphabet.indexOf(upperNextChar) + 1));
+                        List<Character> alphabetCopy = new ArrayList<>(alphabet);
+
+                        List<Character> circularAlphabet = alphabetCopy.subList(alphabetCopy.indexOf(upperNextChar) + 1, alphabetCopy.size());
+                        circularAlphabet.addAll(alphabetCopy.subList(0, alphabetCopy.indexOf(upperNextChar)+1));
 
                         Character encryptedChar = circularAlphabet.get(circularAlphabet.indexOf(upperNextChar) - encryptionKey);
                         outputFile.write(encryptedChar);
@@ -115,7 +117,7 @@ public class Cypher {
     protected void outputFileCreation(Path outputFile){
         if (Files.notExists(outputFile)) {
             try {
-                Files.createFile(outputPath);
+                Files.createFile(outputFile);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
