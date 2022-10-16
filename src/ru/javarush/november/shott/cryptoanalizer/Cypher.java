@@ -60,20 +60,7 @@ public class Cypher {
                 char nextChar = (char) buffer.read();
                 char upperNextChar = Character.toUpperCase(nextChar);
                 if (alphabet.contains(upperNextChar)) {
-                    if (alphabet.indexOf(upperNextChar) + encryptionKey > alphabet.size() - 1) {
-
-                        List<Character> circularAlphabet = alphabet.subList(alphabet.indexOf(upperNextChar), alphabet.size());
-                        for (int i = 0; i < alphabet.size() - circularAlphabet.size(); i++) {
-                            circularAlphabet.add(alphabet.get(i));
-                        }
-
-                        Character encryptedChar = circularAlphabet.get(circularAlphabet.indexOf(upperNextChar) + encryptionKey);
-                        outputFile.write(encryptedChar);
-
-                    } else {
-                        Character encryptedChar = alphabet.get(alphabet.indexOf(upperNextChar) + encryptionKey);
-                        outputFile.write(encryptedChar);
-                    }
+                    encryptionCircular(upperNextChar, outputFile);
                 }
 
             }
@@ -93,19 +80,7 @@ public class Cypher {
                 char nextChar = (char) buffer.read();
                 char upperNextChar = Character.toUpperCase(nextChar);
                 if (alphabet.contains(upperNextChar)) {
-                    if (alphabet.indexOf(upperNextChar) - encryptionKey < 0) {
-
-                        List<Character> alphabetCopy = new ArrayList<>(alphabet);
-
-                        List<Character> circularAlphabet = alphabetCopy.subList(alphabetCopy.indexOf(upperNextChar) + 1, alphabetCopy.size());
-                        circularAlphabet.addAll(alphabetCopy.subList(0, alphabetCopy.indexOf(upperNextChar)+1));
-
-                        Character encryptedChar = circularAlphabet.get(circularAlphabet.indexOf(upperNextChar) - encryptionKey);
-                        outputFile.write(encryptedChar);
-                    } else {
-                        Character encryptedChar = alphabet.get(alphabet.indexOf(upperNextChar) - encryptionKey);
-                        outputFile.write(encryptedChar);
-                    }
+                    decryptionCircular(upperNextChar, outputFile);
                 }
             }
 
@@ -114,7 +89,7 @@ public class Cypher {
         }
     }
 
-    protected void outputFileCreation(Path outputFile){
+    protected void outputFileCreation(Path outputFile) {
         if (Files.notExists(outputFile)) {
             try {
                 Files.createFile(outputFile);
@@ -123,4 +98,43 @@ public class Cypher {
             }
         }
     }
+
+    private void encryptionCircular(char upperNextChar, BufferedWriter outputFile) throws IOException {
+
+        if (alphabet.indexOf(upperNextChar) + encryptionKey > alphabet.size() - 1) {
+
+            List<Character> circularAlphabet = alphabet.subList(alphabet.indexOf(upperNextChar), alphabet.size());
+            for (int i = 0; i < alphabet.size() - circularAlphabet.size(); i++) {
+                circularAlphabet.add(alphabet.get(i));
+            }
+
+            Character encryptedChar = circularAlphabet.get(circularAlphabet.indexOf(upperNextChar) + encryptionKey);
+            outputFile.write(encryptedChar);
+
+        } else {
+            Character encryptedChar = alphabet.get(alphabet.indexOf(upperNextChar) + encryptionKey);
+            outputFile.write(encryptedChar);
+        }
+
+    }
+
+    private void decryptionCircular(char upperNextChar, BufferedWriter outputFile) throws IOException {
+        if (alphabet.indexOf(upperNextChar) - encryptionKey < 0) {
+
+            List<Character> alphabetCopy = new ArrayList<>(alphabet);
+
+            List<Character> circularAlphabet = alphabetCopy.subList(alphabetCopy.indexOf(upperNextChar) + 1, alphabetCopy.size());
+            circularAlphabet.addAll(alphabetCopy.subList(0, alphabetCopy.indexOf(upperNextChar) + 1));
+
+            Character encryptedChar = circularAlphabet.get(circularAlphabet.indexOf(upperNextChar) - encryptionKey);
+            outputFile.write(encryptedChar);
+        } else {
+            Character encryptedChar = alphabet.get(alphabet.indexOf(upperNextChar) - encryptionKey);
+            outputFile.write(encryptedChar);
+        }
+
+
+    }
 }
+
+
